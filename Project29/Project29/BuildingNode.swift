@@ -67,4 +67,25 @@ class BuildingNode: SKSpriteNode {
         //Devolver como UIImage
         return img
     }
+    
+    func hit(at point: CGPoint) {
+        //Averiguar donde fue el impacto
+        let convertedPoint = CGPoint(x: point.x + size.width / 2.0, y: abs(point.y - (size.height / 2.0)))
+        //Crear un nuevo contexto del tamaño del sprite actual
+        let renderer = UIGraphicsImageRenderer(size: size)
+        let img = renderer.image { ctx in
+            //Dibuja al edificio en su estado actual
+            currentImage.draw(at: .zero)
+            //Crea el elipse
+            ctx.cgContext.addEllipse(in: CGRect(x: convertedPoint.x - 32, y: convertedPoint.y - 32, width: 64, height: 64))
+            //Dibuja la elipse cortando esa parte del edificio con clear
+            ctx.cgContext.setBlendMode(.clear)
+            ctx.cgContext.drawPath(using: .fill)
+        }
+        //Se guarda la textura y la image actual
+        texture = SKTexture(image: img)
+        currentImage = img
+        //Se vuelve a calcular la fisica por pixel del edificio
+        configurePhysics()
+    }
 }
