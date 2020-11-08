@@ -18,6 +18,11 @@ class GameViewController: UIViewController {
     @IBOutlet weak var velocityLabel: UILabel!
     @IBOutlet weak var launchButton: UIButton!
     @IBOutlet weak var playerNumber: UILabel!
+    @IBOutlet weak var player1Label: UILabel!
+    @IBOutlet weak var player2Label: UILabel!
+    
+    var player1 = 0
+    var player2 = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,7 +45,13 @@ class GameViewController: UIViewController {
             view.showsFPS = true
             view.showsNodeCount = true
         }
-        
+        setupUI()
+    }
+    
+    func setupUI() {
+        angleSlider.value = 45
+        velocitySlider.value = 125
+        updateScore()
         angleChanged(angleSlider)
         velocityChanged(velocitySlider)
     }
@@ -95,6 +106,11 @@ class GameViewController: UIViewController {
         velocityLabel.isHidden = false
         
         launchButton.isHidden = false
+    }
+    
+    func updateScore () {
+        player1Label.text = "Player 1: \(player1)"
+        player2Label.text = "Player 2: \(player2)"
     }
     
 }

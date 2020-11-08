@@ -143,10 +143,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
         
         if firstNode.name == "banana" && secondNode.name == "player1" {
+            viewController.player2 += 1
             destroy(player: player1)
         }
         
         if firstNode.name == "banana" && secondNode.name == "player2" {
+            viewController.player1 += 1
             destroy(player: player2)
         }
     }
@@ -159,7 +161,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         player.removeFromParent()
         banana.removeFromParent()
-        
+
+        if viewController.player1 < 3 && viewController.player2 < 3 {
+            restartScene()
+        } else {
+            gameOver()
+        }
+    }
+    
+    func restartScene() {
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
             //Transición de escena
             let newGame = GameScene(size: self.size)
@@ -194,7 +204,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     func changePlayer() {
         currentPlayer = currentPlayer == 1 ? 2 : 1
-        
+        viewController.updateScore()
         viewController.activatePlayer(number: currentPlayer)
     }
     
@@ -206,6 +216,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             banana = nil
             changePlayer()
         }
+    }
+    
+    func gameOver() {
+        let winner = viewController.player1 > viewController.player2 ? "Player 1" : "Player 2"
+        let ac = UIAlertController(title: "Game Over", message: "The winner is \(winner)", preferredStyle: .alert)
+        ac.addAction(UIAlertAction(title: "", style: .default, handler: { action in
+        
+        }))
+        view?.window?.rootViewController?.present(ac, animated: true)
     }
     
 }
