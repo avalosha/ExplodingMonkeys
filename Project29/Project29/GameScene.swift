@@ -221,8 +221,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     func gameOver() {
         let winner = viewController.player1 > viewController.player2 ? "Player 1" : "Player 2"
         let ac = UIAlertController(title: "Game Over", message: "The winner is \(winner)", preferredStyle: .alert)
-        ac.addAction(UIAlertAction(title: "", style: .default, handler: { action in
-        
+        ac.addAction(UIAlertAction(title: "Restart game", style: .default, handler: { action in
+            self.viewController.player1 = 0
+            self.viewController.player2 = 0
+            self.restartScene()
         }))
         view?.window?.rootViewController?.present(ac, animated: true)
     }
